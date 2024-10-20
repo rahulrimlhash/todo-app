@@ -78,12 +78,28 @@ def signout(request):
     return redirect('signin')
 
 @login_required
-def UpdateTask(request, id):
+def FinishTask(request, id):
     # get_task_to_delete = Task.objects.get(request.user, task=name)
     get_task = get_object_or_404(Task, user=request.user, id=id)
     get_task.status = True
     get_task.save()
     return redirect('home')
+
+@login_required
+def UpdateTask(request, id):
+    task_instance = get_object_or_404(Task, user=request.user, id=id)
+
+    if request.method == 'POST':
+        task_instance.task = request.POST['task']
+        task_instance.status = request.POST['status']
+        task_instance.save()
+        messages.success(request, 'Task updated successfully!')
+        return redirect('home')
+
+    context = {
+        'task': task_instance
+    }
+    return render(request, 'update.html', context)
 
 @login_required
 def DeleteTask(request, id):

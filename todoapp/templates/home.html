@@ -116,8 +116,11 @@
                     <a href="{% url 'delete-task' i.id %}">
                       <button type="button" class="btn btn-danger">Delete</button>
                     </a>
-                    <a href="{% url 'update-task' i.id %}">
+                    <a href="{% url 'finish-task' i.id %}">
                       <button type="button" class="btn btn-success ms-1">Finished</button>
+                    </a>
+                    <a href="{% url 'update-task' i.id %}">
+                        <button type="button" class="btn btn-success ms-1">Update</button>
                     </a>
                   </td>
                 </tr>
