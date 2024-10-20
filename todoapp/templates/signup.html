@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <h2>Register</h2><br>
+
+      {% if messages %}
+        {% for message in messages %}
+          <h2 class="message">{{ message }}</h2>
+        {% endfor %}
+      {% endif %}
+
+      <form action="{% url 'signup' %}" method="POST">
+        {% csrf_token %}
+        <div class="input-box">
+          <input type="text" placeholder="Create a username" required name="username">
+        </div>
+        <div class="input-box">
+          <input type="email" placeholder="Enter your email" required name="email">
+        </div>
+        <div class="input-box">
+          <input type="password" placeholder="Enter your password" required name="password">
+        </div>
+        <div class="input-box button">
+          <input type="Submit" value="Register">
+        </div>
+        <div class="text">
+          <h3>Already have an account? <a href="{% url 'signin' %}">Login now</a></h3> <!-- Login link -->
+        </div>
+      </form>
+    </div>
+  </body>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #e3f9e5; /* Light greenish background */
+    }
+    .wrapper {
+      position: relative;
+      max-width: 430px;
+      width: 100%;
+      background: #fff;
+      padding: 34px;
+      border-radius: 12px; /* Smoother border-radius */
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Softer shadow */
+      margin: 20px;
+    }
+    .wrapper h2 {
+      position: relative;
+      font-size: 24px; /* Increased font size */
+      font-weight: 600;
+      color: #2c3e50; /* Darker text */
+    }
+    .wrapper h2::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -10px;
+      height: 3px;
+      width: 40px;
+      border-radius: 12px;
+      background: #27ae60; /* Green underline */
+    }
+    .wrapper form {
+      margin-top: 30px;
+    }
+    .wrapper form .input-box {
+      height: 52px;
+      margin: 18px 0;
+    }
+    form .input-box input {
+      height: 100%;
+      width: 100%;
+      outline: none;
+      padding: 0 15px;
+      font-size: 17px;
+      font-weight: 400;
+      color: #333;
+      border: 1.5px solid #bdc3c7; /* Softer border */
+      border-bottom-width: 2.5px;
+      border-radius: 8px; /* Rounded input boxes */
+      transition: all 0.3s ease;
+    }
+    .input-box input:focus,
+    .input-box input:valid {
+      border-color: #27ae60; /* Green border on focus */
+    }
+    .input-box.button input {
+      color: #fff;
+      letter-spacing: 1px;
+      border: none;
+      background: #27ae60; /* Green button */
+      cursor: pointer;
+      border-radius: 8px; /* Rounded button */
+      transition: background 0.3s;
+    }
+    .input-box.button input:hover {
+      background: #2ecc71; /* Lighter green on hover */
+    }
+    form .text h3 {
+      color: #2c3e50;
+      width: 100%;
+      text-align: center;
+    }
+    form .text h3 a {
+      color: #2980b9; /* Blue color for Login link */
+      text-decoration: none;
+      font-weight: 500; /* Bold link */
+    }
+    form .text h3 a:hover {
+      text-decoration: underline;
+    }
+    .message {
+      color: #e74c3c; /* Error message in red */
+      text-align: center;
+    }
+  </style>
+</html>

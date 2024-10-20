@@ -1,0 +1,96 @@
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from .models import Task
+from django.contrib.auth.decorators import login_required
+
+# Create your views here.
+
+@login_required
+def home(request):
+    if request.method == 'POST':
+        task = request.POST['task']
+        new_task = Task(user=request.user, task=task)
+        new_task.save()
+        
+    all_tasks = Task.objects.filter(user=request.user)
+    context = {
+        'all_tasks': all_tasks
+    }
+    return render(request, 'home.html', context)
+
+def signup(request):
+    if request.user.is_authenticates:
+        return redirect('home')
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        
+        # username validation   
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'This username is already taken. Please choose another.')
+            return redirect('signup')
+        
+        # email validation
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "An account with this email already exists. Please log in or use a different email.")
+            return redirect('signup')
+
+        # password validation
+        if len(password)<5:
+            messages.error(request, "Password must be include more than 5 characters")
+            return redirect('signup')
+        
+        # email validation
+        if '@' not in email or '.' not in email.split('@')[-1]:
+            messages.error(request, "Please enter a valid email address.")
+            return redirect('signup')   
+        
+        new_user = User.objects.create_user(username=username, email=email, password=password)
+        new_user.save()
+        
+        messages.success(request, "Your account has been created successfully. Please log in.")
+        return redirect('signin')
+        
+        
+    return render(request, 'signup.html')
+
+def signin(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            messages.success(request, 'User logged successfully')
+            return redirect('home')
+        else:
+            messages.error(request, "Invalid username or password. Please try again.")
+            return redirect('signin')
+    return render(request, 'login.html')
+
+def signout(request):
+    logout(request)
+    return redirect('signin')
+
+@login_required
+def UpdateTask(request, id):
+    # get_task_to_delete = Task.objects.get(request.user, task=name)
+    get_task = get_object_or_404(Task, user=request.user, id=id)
+    get_task.status = True
+    get_task.save()
+    return redirect('home')
+
+@login_required
+def DeleteTask(request, id):
+    # get_task = Task.objects.get(request.user, task=name)
+    # get_task_to_delete = Task.objects.get(request.user, task=name)
+    get_task_to_delete = get_object_or_404(Task, user=request.user, id=id)
+    get_task_to_delete.delete()
+    return redirect('home')
+
+
