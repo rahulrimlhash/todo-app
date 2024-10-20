@@ -42,6 +42,14 @@
       .btn-success:hover {
         background-color: #2ecc71; /* Lighter green on hover */
       }
+      .btn-black {
+          background-color: black; /* Black background */
+          color: white; /* White text color */
+          border: none; /* No border */
+      }
+      .btn-black:hover {
+          background-color: #333; /* Darker shade on hover */
+      }
       h4 {
         color: #2c3e50; /* Darker heading text */
       }
@@ -72,6 +80,12 @@
           <div class="card-body p-4">
 
             <h4 class="text-center my-3 pb-3">To Do App</h4>
+            <!-- {% if messages %}
+            {% for message in messages %}
+            <h6 class="message">{{ message }}</h6>
+             {% endfor %}
+             {% endif %} -->
+
 
             <form method="POST" class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2">
               {% csrf_token %}
@@ -92,6 +106,11 @@
                 <button type="button" class="btn btn-danger">Logout</button>
               </a>
             </div>
+            {% if messages %}
+            {% for message in messages %}
+            <h6 class="message">{{ message }}</h6>
+             {% endfor %}
+             {% endif %}
 
             <table class="table mb-4">
               <thead>
@@ -120,7 +139,7 @@
                       <button type="button" class="btn btn-success ms-1">Finished</button>
                     </a>
                     <a href="{% url 'update-task' i.id %}">
-                        <button type="button" class="btn btn-success ms-1">Update</button>
+                        <button type="button" class="btn btn-black ms-1">Update</button>
                     </a>
                   </td>
                 </tr>

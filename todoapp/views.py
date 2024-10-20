@@ -21,8 +21,8 @@ def home(request):
     return render(request, 'home.html', context)
 
 def signup(request):
-    if request.user.is_authenticates:
-        return redirect('home')
+    # if request.user.is_authenticates:
+    #     return redirect('home')
     if request.method == 'POST':
         username = request.POST['username']
         email = request.POST['email']
@@ -83,6 +83,7 @@ def FinishTask(request, id):
     get_task = get_object_or_404(Task, user=request.user, id=id)
     get_task.status = True
     get_task.save()
+    messages.success(request, 'Task finished successfully!')
     return redirect('home')
 
 @login_required
@@ -107,6 +108,7 @@ def DeleteTask(request, id):
     # get_task_to_delete = Task.objects.get(request.user, task=name)
     get_task_to_delete = get_object_or_404(Task, user=request.user, id=id)
     get_task_to_delete.delete()
+    messages.success(request, 'Task deleted successfully!')
     return redirect('home')
 
 

@@ -11,9 +11,9 @@
 
       {% if messages %}
         {% for message in messages %}
-          <h2 class="message">{{ message }}</h2>
+          <h4 class="message">{{ message }}</h4>
         {% endfor %}
-      {% endif %}
+      {% endif %} 
 
       <form action="{% url 'signin' %}" method="POST">
         {% csrf_token %}
