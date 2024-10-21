@@ -26,7 +26,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 def home(request):
     if request.method == 'POST':
         task = request.POST['task']
-        new_task = Task(user=request.user, task=task)
+        new_task = Task(user=request.user, task=task, is_deleted=False)
         new_task.save()
         
     # all_tasks = Task.objects.filter(user=request.user)
@@ -34,9 +34,9 @@ def home(request):
     # Handling search query
     query = request.GET.get('q')
     if query:
-        all_tasks = Task.objects.filter(user=request.user, task__icontains=query)
+        all_tasks = Task.objects.filter(user=request.user, task__icontains=query,is_deleted=False)
     else:
-        all_tasks = Task.objects.filter(user=request.user)
+        all_tasks = Task.objects.filter(user=request.user, is_deleted=False)
 
     # Pagination setup
     paginator = Paginator(all_tasks, 10)  # Show 10 tasks per page
@@ -44,10 +44,13 @@ def home(request):
     
     try:
         tasks = paginator.page(page)
+        print(tasks)
     except PageNotAnInteger:
         tasks = paginator.page(1)  # If page is not an integer, deliver first page.
+        print(tasks)
     except EmptyPage:
         tasks = paginator.page(paginator.num_pages)  # If page is out of range, deliver last page.
+        print(tasks)
 
     context = {
         'tasks': tasks
@@ -136,12 +139,20 @@ def UpdateTask(request, id):
     }
     return render(request, 'update.html', context)
 
+# @login_required
+# def DeleteTask(request, id):
+#     # get_task = Task.objects.get(request.user, task=name)
+#     # get_task_to_delete = Task.objects.get(request.user, task=name)
+#     get_task_to_delete = get_object_or_404(Task, user=request.user, id=id)
+#     get_task_to_delete.delete()
+#     messages.success(request, 'Task deleted successfully!')
+#     return redirect('home')
+
 @login_required
 def DeleteTask(request, id):
-    # get_task = Task.objects.get(request.user, task=name)
-    # get_task_to_delete = Task.objects.get(request.user, task=name)
     get_task_to_delete = get_object_or_404(Task, user=request.user, id=id)
-    get_task_to_delete.delete()
+    get_task_to_delete.is_deleted = True
+    get_task_to_delete.save()
     messages.success(request, 'Task deleted successfully!')
     return redirect('home')
 
