@@ -81,6 +81,18 @@
 
             <h4 class="text-center my-3 pb-3">To Do App</h4>
 
+            <!-- Add a Search Bar here -->
+            <form method="GET" class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2">
+              <div class="col-12">
+                <div class="form-outline">
+                  <input type="text" id="search" class="form-control" name="q" placeholder="Search for tasks" value="{{ request.GET.search }}">
+                </div>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-secondary">Search</button>
+              </div>
+            </form>
+
             <form method="POST" class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2">
               {% csrf_token %}
               <div class="col-12">

@@ -29,7 +29,14 @@ def home(request):
         new_task = Task(user=request.user, task=task)
         new_task.save()
         
-    all_tasks = Task.objects.filter(user=request.user)
+    # all_tasks = Task.objects.filter(user=request.user)
+    
+    # Handling search query
+    query = request.GET.get('q')
+    if query:
+        all_tasks = Task.objects.filter(user=request.user, task__icontains=query)
+    else:
+        all_tasks = Task.objects.filter(user=request.user)
 
     # Pagination setup
     paginator = Paginator(all_tasks, 10)  # Show 10 tasks per page
@@ -45,7 +52,7 @@ def home(request):
     context = {
         'tasks': tasks
     }
-    return render(request, 'index.html', context)
+    return render(request, 'index1.html', context)
 
 def signup(request):
     # if request.user.is_authenticates:
