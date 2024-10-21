@@ -9,11 +9,12 @@
     <div class="wrapper">
       <h2>Login</h2><br>
 
+      <!-- Message display section with dynamic class based on message tags -->
       {% if messages %}
         {% for message in messages %}
-          <h4 class="message">{{ message }}</h4>
+          <h4 class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</h4>
         {% endfor %}
-      {% endif %} 
+      {% endif %}
 
       <form action="{% url 'signin' %}" method="POST">
         {% csrf_token %}
@@ -122,8 +123,28 @@
     form .text h3 a:hover{
       text-decoration: underline;
     }
-    .message{
-      color: #e74c3c; /* Error message in red */
+
+    /* Style for success messages */
+    .success{
+      color: #27ae60; /* Green color for success messages */
+      text-align: center;
+    }
+
+    /* Style for error messages */
+    .error{
+      color: #e74c3c; /* Red color for error messages */
+      text-align: center;
+    }
+
+    /* Style for info messages */
+    .info{
+      color: #3498db; /* Blue color for info messages */
+      text-align: center;
+    }
+
+    /* Style for warning messages */
+    .warning{
+      color: #f1c40f; /* Yellow color for warning messages */
       text-align: center;
     }
   </style>

@@ -4,9 +4,24 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Task
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 # Create your views here.
 
+# @login_required
+# def home(request):
+#     if request.method == 'POST':
+#         task = request.POST['task']
+#         new_task = Task(user=request.user, task=task)
+#         new_task.save()
+        
+#     all_tasks = Task.objects.filter(user=request.user)
+#     context = {
+#         'all_tasks': all_tasks
+#     }
+#     return render(request, 'home.html', context)
+
+# Code for pagination is here
 @login_required
 def home(request):
     if request.method == 'POST':
@@ -15,10 +30,22 @@ def home(request):
         new_task.save()
         
     all_tasks = Task.objects.filter(user=request.user)
+
+    # Pagination setup
+    paginator = Paginator(all_tasks, 10)  # Show 10 tasks per page
+    page = request.GET.get('page')
+    
+    try:
+        tasks = paginator.page(page)
+    except PageNotAnInteger:
+        tasks = paginator.page(1)  # If page is not an integer, deliver first page.
+    except EmptyPage:
+        tasks = paginator.page(paginator.num_pages)  # If page is out of range, deliver last page.
+
     context = {
-        'all_tasks': all_tasks
+        'tasks': tasks
     }
-    return render(request, 'home.html', context)
+    return render(request, 'index.html', context)
 
 def signup(request):
     # if request.user.is_authenticates:
