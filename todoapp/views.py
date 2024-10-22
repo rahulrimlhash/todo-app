@@ -30,7 +30,6 @@ def home(request):
         new_task.save()
         
     # all_tasks = Task.objects.filter(user=request.user)
-    
     # Handling search query
     query = request.GET.get('q')
     if query:
@@ -39,23 +38,23 @@ def home(request):
         all_tasks = Task.objects.filter(user=request.user, is_deleted=False).order_by('-created_at')
 
     # Pagination setup
-    paginator = Paginator(all_tasks, 10)  # Show 10 tasks per page
+    paginator = Paginator(all_tasks, 6)
     page = request.GET.get('page')
     
     try:
         tasks = paginator.page(page)
         print(tasks)
     except PageNotAnInteger:
-        tasks = paginator.page(1)  # If page is not an integer, deliver first page.
+        tasks = paginator.page(1) 
         print(tasks)
     except EmptyPage:
-        tasks = paginator.page(paginator.num_pages)  # If page is out of range, deliver last page.
+        tasks = paginator.page(paginator.num_pages)
         print(tasks)
 
     context = {
         'tasks': tasks
     }
-    return render(request, 'index1.html', context)
+    return render(request, 'index.html', context)
 
 def signup(request):
     # if request.user.is_authenticates:
@@ -150,6 +149,7 @@ def UpdateTask(request, id):
 
 @login_required
 def DeleteTask(request, id):
+    # get_task = Task.objects.get(request.user, task=name)
     get_task_to_delete = get_object_or_404(Task, user=request.user, id=id)
     get_task_to_delete.is_deleted = True
     get_task_to_delete.save()

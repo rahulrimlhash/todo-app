@@ -81,6 +81,18 @@
 
             <h4 class="text-center my-3 pb-3">To Do App</h4>
 
+            <!-- Add a Search Bar here -->
+            <form method="GET" class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2">
+              <div class="col-12">
+                <div class="form-outline">
+                  <input type="text" id="search" class="form-control" name="q" placeholder="Search for tasks" value="{{ request.GET.search }}">
+                </div>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-secondary">Search</button>
+              </div>
+            </form>
+
             <form method="POST" class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2">
               {% csrf_token %}
               <div class="col-12">
@@ -120,11 +132,13 @@
                 {% for task in tasks %}
                 <tr>
                   <td>{{ task.task }}</td>
-                  {% if task.status %}
-                    <td>Completed</td>
-                  {% else %}
-                    <td>In progress</td>
-                  {% endif %}
+                  <td>
+                    {% if task.status %}
+                      <span class="text-success">Completed</span> <!-- Green text for Completed -->
+                    {% else %}
+                      <span class="text-warning">In progress</span> <!-- Orange text for In progress -->
+                    {% endif %}
+                  </td>
                   <td>
                     <a href="{% url 'delete-task' task.id %}">
                       <button type="button" class="btn btn-danger">Delete</button>
@@ -133,12 +147,13 @@
                       <button type="button" class="btn btn-success ms-1">Finished</button>
                     </a>
                     <a href="{% url 'update-task' task.id %}">
-                      <button type="button" class="btn btn-black ms-1">Update</button>
+                      <button type="button" class="btn btn-dark ms-1">Update</button>
                     </a>
                   </td>
                 </tr>
                 {% endfor %}
               </tbody>
+              
             </table>
 
             <!-- Pagination controls -->
