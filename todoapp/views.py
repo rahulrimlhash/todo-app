@@ -34,9 +34,9 @@ def home(request):
     # Handling search query
     query = request.GET.get('q')
     if query:
-        all_tasks = Task.objects.filter(user=request.user, task__icontains=query,is_deleted=False)
+        all_tasks = Task.objects.filter(user=request.user, task__icontains=query,is_deleted=False).order_by('-created_at')
     else:
-        all_tasks = Task.objects.filter(user=request.user, is_deleted=False)
+        all_tasks = Task.objects.filter(user=request.user, is_deleted=False).order_by('-created_at')
 
     # Pagination setup
     paginator = Paginator(all_tasks, 10)  # Show 10 tasks per page
