@@ -1,5 +1,3 @@
-TODO Application Using Django
-Oct 2024 - Oct 2024Oct 2024 - Oct 2024
 ToDo Application (Python, Django, MySQL)
 
 Description:
