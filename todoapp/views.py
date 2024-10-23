@@ -36,6 +36,7 @@ def home(request):
         all_tasks = Task.objects.filter(user=request.user, task__icontains=query,is_deleted=False).order_by('-created_at')
     else:
         all_tasks = Task.objects.filter(user=request.user, is_deleted=False).order_by('-created_at')
+        
 
     # Pagination setup
     paginator = Paginator(all_tasks, 6)
@@ -54,7 +55,7 @@ def home(request):
     context = {
         'tasks': tasks
     }
-    return render(request, 'index.html', context)
+    return render(request, 'alignment.html', context)
 
 def signup(request):
     # if request.user.is_authenticates:

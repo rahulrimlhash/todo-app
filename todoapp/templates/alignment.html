@@ -40,13 +40,6 @@
         right: 20px;
       }
 
-      <!-- .btn-logout {
-        background-color: #27ae60;
-        border: none;
-        color: white;
-        transition: background-color 0.3s ease;
-      } -->
-
       .btn-logout {
         background-color: #338756;
         border: none;
@@ -89,6 +82,49 @@
 
       .pagination .page-link:focus {
         outline: none;
+      }
+
+      /* Table styling for task list */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      table th, table td {
+        padding: 10px;
+        text-align: left;
+        vertical-align: middle;
+      }
+
+      table td:nth-child(1) {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      table td:nth-child(2), table th:nth-child(2) {
+        width: 20%;
+      }
+
+      table td:nth-child(3), table th:nth-child(3) {
+        width: 10%;
+      }
+
+      table td:nth-child(4), table th:nth-child(4) {
+        width: 30%;
+      }
+
+      .actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .actions button {
+        padding: 8px 12px;
+        font-size: 14px;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
       }
     </style>
 </head>
@@ -145,7 +181,7 @@
               <thead>
                 <tr>
                   <th scope="col">Todo item</th>
-                  <th scope="col">Created Time</th>
+                  <!-- <th scope="col">Created Time</th> -->
                   <th scope="col">Status</th>
                   <th scope="col">Actions</th>
                 </tr>
@@ -153,8 +189,8 @@
               <tbody>
                 {% for task in tasks %}
                 <tr>
-                  <td>{{ task.task|truncatewords:3 }}</td>
-                  <td>{{ task.created_at }}</td>
+                  <td>{{ task.task|truncatewords:10 }}</td>
+                  <!-- <td>{{ task.created_at }}</td> -->
                   <td>
                     {% if task.status %}
                       <span class="text-success">Completed</span> <!-- Green text for Completed -->
@@ -162,15 +198,18 @@
                       <span class="text-warning">In progress</span> <!-- Orange text for In progress -->
                     {% endif %}
                   </td>
-                  <td>
-                    <a href="{% url 'delete-task' task.id %}">
+                  <td class="actions">
+                    <!-- <a href="{% url 'delete-task' task.id %}">
                       <button type="button" class="btn btn-danger">Delete</button>
-                    </a>
+                    </a> -->
                     <a href="{% url 'finish-task' task.id %}">
                       <button type="button" class="btn btn-success ms-1">Finished</button>
                     </a>
                     <a href="{% url 'update-task' task.id %}">
                       <button type="button" class="btn btn-dark ms-1">Update</button>
+                    </a>
+                    <a href="{% url 'delete-task' task.id %}">
+                        <button type="button" class="btn btn-danger">Delete</button>
                     </a>
                   </td>
                 </tr>
